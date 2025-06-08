@@ -1,0 +1,138 @@
+---
+title: "AI 助手 API"
+description: "与AI IDE内置助手交互的API"
+---
+
+# AI 助手 API
+
+AI IDE的AI助手API允许您以编程方式与内置的AI助手交互，获取代码建议、解释和生成。
+
+## 基本用法
+
+```javascript
+import { aiAssistant } from 'ai-ide-sdk';
+
+// 获取代码补全建议
+const completions = await aiAssistant.getCompletions({
+  code: "function sum(a, b) {\n  // 计算两个数的和\n  ",
+  language: "javascript",
+  maxSuggestions: 3
+});
+
+// 获取代码解释
+const explanation = await aiAssistant.explainCode({
+  code: "const result = array.reduce((acc, val) => acc + val, 0);",
+  language: "javascript"
+});
+
+// 生成新代码
+const generatedCode = await aiAssistant.generateCode({
+  prompt: "创建一个React组件，显示用户列表并支持分页",
+  language: "typescript"
+});
+```
+
+## API参考
+
+### aiAssistant.getCompletions(options)
+
+提供智能代码补全建议。
+
+**参数**:
+- `options: CompletionOptions` - 补全选项对象
+  - `code: string` - 当前编辑的代码
+  - `language: string` - 编程语言
+  - `cursorPosition?: Position` - 光标位置 (行/列)
+  - `maxSuggestions?: number` - 返回的最大建议数（默认为5）
+  - `contextFiles?: string[]` - 提供上下文的文件路径
+
+**返回值**:
+- `Promise<Completion[]>` - 代码补全建议数组
+
+### aiAssistant.explainCode(options)
+
+获取代码片段的自然语言解释。
+
+**参数**:
+- `options: ExplainOptions` - 解释选项对象
+  - `code: string` - 需要解释的代码
+  - `language: string` - 编程语言
+  - `detailLevel?: 'brief' | 'detailed'` - 解释详细程度
+
+**返回值**:
+- `Promise<string>` - 代码解释
+
+### aiAssistant.generateCode(options)
+
+基于自然语言提示生成代码。
+
+**参数**:
+- `options: GenerateOptions` - 生成选项对象
+  - `prompt: string` - 描述要生成什么代码的自然语言提示
+  - `language: string` - 目标编程语言
+  - `contextFiles?: string[]` - 提供上下文的文件路径
+  - `maxTokens?: number` - 生成的最大token数量
+
+**返回值**:
+- `Promise<string>` - 生成的代码
+
+## 高级用法
+
+### 添加自定义上下文
+
+```javascript
+// 提供项目特定上下文以获取更相关的建议
+const completions = await aiAssistant.getCompletions({
+  code: "function calculateTax() {\n  ",
+  language: "javascript",
+  customContext: {
+    projectType: "财务应用",
+    taxRules: "基于美国税收规则"
+  }
+});
+```
+
+### 流式生成
+
+```javascript
+// 使用流式API逐步接收生成的代码
+const stream = aiAssistant.generateCodeStream({
+  prompt: "创建一个Express.js API服务器，包含用户认证功能",
+  language: "javascript"
+});
+
+stream.on('data', (chunk) => {
+  console.log(chunk); // 处理代码块
+});
+
+stream.on('end', () => {
+  console.log("代码生成完成");
+});
+```
+
+## 错误处理
+
+```javascript
+try {
+  const generatedCode = await aiAssistant.generateCode({
+    prompt: "创建一个React Native应用",
+    language: "typescript"
+  });
+} catch (error) {
+  if (error instanceof QuotaExceededError) {
+    console.error("API配额已用尽");
+  } else if (error instanceof InvalidRequestError) {
+    console.error("请求参数无效:", error.message);
+  } else {
+    console.error("AI助手错误:", error.message);
+  }
+}
+```
+
+## 最佳实践
+
+1. 提供足够的上下文以获得最佳结果
+2. 对于大型代码生成任务，使用流式API
+3. 实施速率限制处理以避免配额问题
+4. 在重要功能中添加错误处理 
+ 

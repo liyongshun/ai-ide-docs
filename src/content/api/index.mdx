@@ -1,0 +1,59 @@
+---
+title: "API文档"
+description: "AI IDE的API接口和扩展开发指南"
+---
+
+# API文档
+
+AI IDE提供了丰富的API接口，让您可以扩展IDE功能，集成自定义工具，或者开发自己的插件。
+
+## API概述
+
+AI IDE的API架构设计为分层结构：
+
+1. **核心API** - 提供IDE基本功能的访问
+2. **AI助手API** - 与内置AI助手交互的接口
+3. **插件API** - 用于开发IDE插件
+4. **扩展系统API** - 定制和扩展IDE核心功能
+
+## 主要API文档
+
+以下是AI IDE提供的主要API文档：
+
+- [AI 助手API](/api/assistant) - 与AI助手交互，获取代码建议和智能补全
+- [插件开发](/api/plugins) - 创建和发布自己的AI IDE插件
+- [扩展系统](/api/extensions) - 扩展IDE功能或集成第三方服务
+
+## 开始使用
+
+如果您是第一次使用AI IDE的API，我们建议您按照以下步骤开始：
+
+1. 设置开发环境
+   ```bash
+   npm install ai-ide-sdk
+   ```
+
+2. 创建一个简单的"Hello World"插件
+   ```javascript
+   import { registerPlugin } from 'ai-ide-sdk';
+   
+   registerPlugin({
+     name: 'Hello World',
+     version: '1.0.0',
+     activate: (context) => {
+       console.log('Hello from AI IDE plugin!');
+     }
+   });
+   ```
+
+3. 查看示例项目获取更多灵感
+
+## API版本控制
+
+AI IDE使用语义化版本控制。API更改遵循以下规则：
+
+- 主版本变更(X.y.z): 包含不向后兼容的API变化
+- 次版本变更(x.Y.z): 添加向后兼容的新功能
+- 补丁版本变更(x.y.Z): 向后兼容的错误修复
+
+请确保在您的扩展或插件中指定所需的API版本。 

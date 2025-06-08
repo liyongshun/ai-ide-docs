@@ -1,0 +1,139 @@
+---
+title: "自然语言交互"
+description: "使用自然语言描述需求，让AI帮您实现功能"
+---
+
+# 自然语言交互
+
+AI IDE的自然语言交互功能让您可以用日常语言与IDE交流，描述您的需求，并让AI帮助您实现功能，极大简化了开发过程。
+
+## 用语言描述需求
+
+无需记住复杂的语法或API，只需用自然语言描述您想要实现的功能：
+
+```
+// 输入自然语言指令
+// "创建一个函数，接收一个日期字符串，返回格式化的日期，格式为YYYY-MM-DD"
+
+// AI理解并生成代码:
+/**
+ * 将日期字符串格式化为YYYY-MM-DD格式
+ * @param {string} dateString - 输入的日期字符串
+ * @return {string} - 格式化后的日期字符串
+ */
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid date string');
+  }
+  
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+}
+```
+
+## 提出问题与获取解答
+
+您可以直接问AI关于代码的问题，获取即时解答：
+
+```javascript
+// 选中以下代码并询问"这段代码有什么潜在问题？"
+const userIds = users.map(u => u.id);
+for (let i = 0; i < userIds.length; i++) {
+  await processUser(userIds[i]);
+}
+
+// AI会回答：
+// 1. 代码在循环中使用await，会导致串行执行而非并行执行，可能影响性能
+// 2. 没有错误处理机制
+// 3. 并提供改进建议：
+//    - 使用Promise.all进行并行处理
+//    - 添加try/catch进行错误处理
+```
+
+## 复杂需求处理
+
+AI IDE可以理解并实现复杂的功能需求：
+
+```
+// 输入自然语言指令
+// "创建一个React组件，显示一个可过滤的产品列表，包括分页功能"
+
+// AI会生成完整的组件代码，包括:
+// - 状态管理
+// - 过滤逻辑
+// - 分页实现
+// - 必要的样式和交互
+```
+
+## 代码重构和优化
+
+描述您希望如何改进现有代码：
+
+```javascript
+// 选中代码并请求
+// "将这段代码重构为更简洁的形式，使用现代JavaScript特性"
+
+// 原始代码
+function getFullName(user) {
+  var firstName = user.firstName;
+  var lastName = user.lastName;
+  var fullName = firstName + ' ' + lastName;
+  return fullName;
+}
+
+// AI重构后
+const getFullName = ({ firstName, lastName }) => `${firstName} ${lastName}`;
+```
+
+## 代码解释与学习
+
+让AI帮助您理解复杂代码：
+
+```javascript
+// 选中不熟悉的代码并询问
+// "解释这段代码的工作原理"
+
+useEffect(() => {
+  const handler = debounce(() => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, 200);
+  
+  window.addEventListener('resize', handler);
+  return () => window.removeEventListener('resize', handler);
+}, []);
+
+// AI会详细解释React的useEffect钩子的作用、去抖动函数的目的、
+// 事件监听器的添加和清理过程等
+```
+
+## 多轮对话与迭代开发
+
+AI IDE支持多轮对话，让您能够逐步完善您的需求：
+
+1. 您：创建一个函数计算两个数组的交集
+2. AI：生成初始函数
+3. 您：优化它以处理重复元素
+4. AI：更新函数实现
+5. 您：添加类型注解
+6. AI：为函数添加TypeScript类型定义
+
+## 多语言支持
+
+AI IDE可以理解多种自然语言，包括：
+- 中文
+- 英文
+- 日文
+- 德文
+- 法文
+- 西班牙文
+- 等多种语言
+
+通过自然语言交互功能，AI IDE将编程转变为一种更加直观、无障碍的体验，让您可以专注于解决问题的思路而不是语法细节。 

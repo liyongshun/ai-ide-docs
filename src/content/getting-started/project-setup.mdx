@@ -1,0 +1,222 @@
+---
+title: "项目设置"
+description: "如何为您的项目配置AI IDE，最大化开发效率"
+---
+
+# 项目设置
+
+为了获得最佳开发体验，您可以为每个项目配置AI IDE的行为。本指南将帮助您设置项目特定的配置，以优化AI功能并提高团队协作效率。
+
+## 创建项目配置
+
+### 项目配置文件
+
+在项目根目录创建`.ai-ide`文件夹，并添加以下文件：
+
+```
+项目根目录/
+├── .ai-ide/
+│   ├── settings.json      # 项目特定设置
+│   ├── context.json       # 项目上下文信息
+│   ├── prompts/           # 自定义提示模板
+│   └── snippets/          # 项目特定代码片段
+├── src/
+└── ...
+```
+
+### 基本项目设置
+
+在`.ai-ide/settings.json`中添加项目特定的配置：
+
+```json
+{
+  "project": {
+    "name": "我的项目",
+    "description": "一个示例项目，展示项目设置功能",
+    "repository": "https://github.com/username/project",
+    "version": "1.0.0"
+  },
+  "ai": {
+    "context": {
+      "includeFiles": ["README.md", "docs/**/*.md", "src/**/*.{js,ts,jsx,tsx}"],
+      "excludeFiles": ["node_modules/**", "build/**", "dist/**", "**/*.test.{js,ts}"],
+      "maxContextSize": 100000
+    }
+  }
+}
+```
+
+## 项目上下文配置
+
+为了让AI更好地理解您的项目，可以提供项目上下文信息：
+
+### 定义项目架构
+
+在`.ai-ide/context.json`中描述项目架构：
+
+```json
+{
+  "architecture": {
+    "frontend": {
+      "framework": "React",
+      "stateManagement": "Redux",
+      "styling": "Tailwind CSS",
+      "keyDirectories": [
+        {"path": "src/components", "purpose": "可重用UI组件"},
+        {"path": "src/pages", "purpose": "应用页面组件"},
+        {"path": "src/store", "purpose": "Redux状态管理"}
+      ]
+    },
+    "backend": {
+      "framework": "Express",
+      "database": "MongoDB",
+      "keyDirectories": [
+        {"path": "src/controllers", "purpose": "API控制器"},
+        {"path": "src/models", "purpose": "数据模型"},
+        {"path": "src/routes", "purpose": "API路由定义"}
+      ]
+    }
+  }
+}
+```
+
+### 添加自定义文档
+
+创建项目文档，帮助AI理解项目特定概念：
+
+```markdown
+<!-- .ai-ide/docs/architecture.md -->
+# 项目架构
+
+本项目采用前后端分离架构，前端使用React，后端使用Express。
+
+## 数据流向
+
+1. 用户操作UI
+2. React组件触发Action
+3. Redux中间件处理副作用
+4. Redux更新状态
+5. 组件重新渲染
+```
+
+## 代码风格和规范
+
+### 项目编码标准
+
+配置项目特定的代码风格和最佳实践：
+
+```json
+{
+  "codeStyle": {
+    "javascript": {
+      "indentation": 2,
+      "quotes": "single",
+      "semicolons": true,
+      "maxLineLength": 100,
+      "namingConventions": {
+        "components": "PascalCase",
+        "functions": "camelCase",
+        "constants": "UPPER_CASE"
+      }
+    }
+  }
+}
+```
+
+### ESLint和Prettier集成
+
+确保AI IDE使用项目的ESLint和Prettier配置：
+
+```json
+{
+  "linting": {
+    "useProjectEslint": true,
+    "useProjectPrettier": true,
+    "autoFixOnSave": true
+  }
+}
+```
+
+## 团队协作设置
+
+### 共享项目设置
+
+为了确保团队成员使用一致的设置，将`.ai-ide`文件夹添加到版本控制：
+
+```bash
+# 确保.ai-ide文件夹被包含在版本控制中
+git add .ai-ide
+git commit -m "添加AI IDE项目配置"
+```
+
+### 团队成员个性化配置
+
+允许团队成员通过创建`.ai-ide/user-settings.json`（已添加到`.gitignore`）进行个性化配置：
+
+```json
+{
+  "ai": {
+    "suggestions": {
+      "frequency": "high"
+    },
+    "theme": "dark"
+  }
+}
+```
+
+## 项目特定提示模板
+
+### 创建代码生成模板
+
+在`.ai-ide/prompts/`文件夹中添加自定义提示模板：
+
+```json
+// component.json
+{
+  "name": "React组件模板",
+  "prompt": "创建一个名为{{componentName}}的React函数组件，具有以下属性：{{properties}}。使用Typescript和函数组件，并添加适当的prop类型和注释。",
+  "parameters": ["componentName", "properties"]
+}
+```
+
+### 使用提示模板
+
+在IDE中，可以通过命令面板（Ctrl+Shift+P 或 Cmd+Shift+P）访问这些模板：
+
+1. 选择"AI: 使用提示模板"
+2. 选择"React组件模板"
+3. 输入参数值
+4. 获取生成的代码
+
+## 项目插件集成
+
+启用特定项目所需的AI IDE插件：
+
+```json
+{
+  "plugins": {
+    "enabled": [
+      "database-schema-helper",
+      "api-documentation-generator",
+      "translation-assistant"
+    ],
+    "settings": {
+      "database-schema-helper": {
+        "schemaLocation": "./src/database/schema"
+      }
+    }
+  }
+}
+```
+
+## 项目健康检查
+
+运行AI IDE项目健康检查，以确保所有设置正确：
+
+```bash
+ai-ide check project
+```
+
+这将验证您的项目配置，并提供改进建议。
+
+通过完善项目设置，您和您的团队可以最大化AI IDE的潜力，提高开发效率和代码质量。 

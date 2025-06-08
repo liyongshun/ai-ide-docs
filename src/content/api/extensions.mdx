@@ -1,0 +1,240 @@
+---
+title: "扩展API"
+description: "使用扩展API自定义和增强AI IDE的功能"
+---
+
+# 扩展API
+
+AI IDE的扩展API允许开发者深度定制和增强IDE的核心功能，创建复杂的工具和集成。本文档详述了可用的扩展点和API。
+
+## 扩展系统概述
+
+### 扩展与插件的区别
+
+在AI IDE中，扩展比插件具有更深层次的系统集成能力：
+
+- **插件**：在现有IDE框架内添加功能
+- **扩展**：修改或增强IDE的核心功能和行为
+
+### 扩展架构
+
+扩展使用模块化架构，通过系统提供的扩展点进行集成：
+
+```
+├── 核心系统
+│   ├── 扩展点A
+│   ├── 扩展点B
+│   └── 扩展点C
+├── 扩展1 ──连接到→ 扩展点A
+├── 扩展2 ──连接到→ 扩展点B和C
+└── 扩展3 ──连接到→ 扩展点A
+```
+
+## 创建扩展
+
+### 扩展项目结构
+
+创建一个基本的AI IDE扩展项目：
+
+```
+my-extension/
+├── package.json            # 扩展元数据和依赖
+├── extension.json          # 扩展点声明和配置
+├── src/
+│   ├── extension.ts        # 扩展入口
+│   ├── models/             # AI模型相关代码
+│   ├── providers/          # 服务提供者
+│   └── services/           # 功能服务
+├── tests/                  # 单元测试
+└── README.md               # 文档
+```
+
+### 扩展声明文件
+
+`extension.json`定义了扩展的集成点和能力：
+
+```json
+{
+  "id": "com.mycompany.advanced-ai",
+  "name": "高级AI功能扩展",
+  "version": "1.0.0",
+  "type": "extension",
+  "compatibility": {
+    "minVersion": "2.0.0",
+    "maxVersion": "3.0.0"
+  },
+  "extensionPoints": [
+    {
+      "point": "ai.modelProvider",
+      "implementation": "./dist/models/customModelProvider.js",
+      "priority": "high"
+    },
+    {
+      "point": "editor.contextMenu",
+      "implementation": "./dist/providers/contextMenuProvider.js"
+    }
+  ],
+  "permissions": [
+    "ai.model.access",
+    "workspace.fileSystem",
+    "network.externalRequest"
+  ],
+  "dependencies": {
+    "other.extension": "^1.0.0"
+  }
+}
+```
+
+## 核心扩展点
+
+### AI模型扩展
+
+自定义或增强IDE的AI能力：
+
+```typescript
+// src/models/customModelProvider.ts
+import { AIModelProvider, AIModelRequest, AIModelResponse } from 'ai-ide-extension-api';
+
+export class MyCustomModelProvider implements AIModelProvider {
+  id = 'my-company.custom-model';
+  displayName = '专业领域AI模型';
+  
+  async query(request: AIModelRequest): Promise<AIModelResponse> {
+    // 实现自定义模型逻辑
+    console.log('处理AI请求:', request.prompt);
+    
+    // 连接到自定义模型服务
+    const result = await this.callCustomService(request);
+    
+    return {
+      content: result.response,
+      metadata: {
+        model: 'my-domain-specific-model',
+        tokens: result.usedTokens
+      }
+    };
+  }
+  
+  private async callCustomService(request: AIModelRequest) {
+    // 实现与自定义服务的通信
+    // ...
+  }
+}
+```
+
+### 编辑器扩展
+
+修改或扩展编辑器功能：
+
+```typescript
+// src/providers/customEditorProvider.ts
+import { EditorExtensionPoint, TextEditor, TextEditorEdit } from 'ai-ide-extension-api';
+
+export class AdvancedEditingFeatures implements EditorExtensionPoint {
+  // 注册编辑器功能
+  register() {
+    return {
+      // 添加自定义编辑命令
+      commands: [
+        {
+          id: 'advancedEditing.formatSpecial',
+          handler: this.formatSpecialHandler.bind(this)
+        }
+      ],
+      // 添加键绑定
+      keybindings: [
+        {
+          command: 'advancedEditing.formatSpecial',
+          key: 'ctrl+alt+f',
+          mac: 'cmd+alt+f'
+        }
+      ]
+    };
+  }
+  
+  // 命令处理函数
+  private formatSpecialHandler(editor: TextEditor) {
+    editor.edit(editBuilder => {
+      // 实现特殊格式化逻辑
+      const document = editor.document;
+      const text = document.getText();
+      // ... 处理文本 ...
+      
+      // 替换所有文本
+      const fullRange = document.getFullRange();
+      editBuilder.replace(fullRange, processedText);
+    });
+  }
+}
+```
+
+## 安全与性能
+
+### 扩展权限系统
+
+AI IDE使用精细的权限模型确保扩展安全：
+
+```typescript
+// extension.json的权限部分
+{
+  "permissions": [
+    {
+      "name": "ai.model.access",
+      "reason": "需要调用AI模型来分析代码"
+    },
+    {
+      "name": "workspace.fileSystem.readWrite",
+      "reason": "需要读写项目文件以实现代码转换功能",
+      "scope": "workspace"
+    },
+    {
+      "name": "network.externalRequest",
+      "reason": "连接到自定义AI模型服务",
+      "domains": ["api.mycompany.com"]
+    }
+  ]
+}
+```
+
+### 性能优化指南
+
+为确保扩展不会影响IDE性能：
+
+1. **懒加载** - 仅在需要时初始化资源
+2. **异步处理** - 对耗时操作使用异步处理
+3. **资源限制** - 设置合理的内存和CPU使用限制
+4. **缓存策略** - 缓存频繁使用的数据
+
+## 发布与分发
+
+### 打包扩展
+
+为分发准备扩展：
+
+```bash
+# 安装打包工具
+npm install -g @ai-ide/extension-cli
+
+# 构建扩展
+extension-cli build
+
+# 验证扩展
+extension-cli verify
+
+# 打包扩展
+extension-cli package
+```
+
+### 提交到扩展市场
+
+通过市场发布扩展：
+
+```bash
+# 登录到扩展市场
+extension-cli login
+
+# 发布扩展
+extension-cli publish
+```
+
+遵循这些指南和API，您可以创建强大的AI IDE扩展，深度定制IDE功能，并为特定领域或工作流添加高级功能。 

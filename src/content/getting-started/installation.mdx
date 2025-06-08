@@ -1,0 +1,98 @@
+---
+title: "安装指南"
+description: "AI IDE的详细安装步骤和疑难解答"
+---
+
+# 安装指南
+
+本文档提供了在不同操作系统上安装AI IDE的详细指南和排障方法。
+
+## Windows安装
+
+### 使用安装程序
+
+1. 下载最新的Windows安装程序(.exe)
+2. 右键点击安装程序，选择"以管理员身份运行"
+3. 按照安装向导的提示完成安装
+4. 安装完成后，在开始菜单或桌面上找到AI IDE图标启动程序
+
+### 使用命令行
+
+```powershell
+# 使用PowerShell安装
+PS> winget install AI-IDE
+
+# 或使用npm安装CLI版本
+PS> npm install -g ai-ide-cli
+```
+
+## macOS安装
+
+### 使用DMG安装包
+
+1. 下载最新的macOS安装包(.dmg)
+2. 打开DMG文件
+3. 将AI IDE拖动到应用程序文件夹
+4. 在Launchpad或应用程序文件夹中找到AI IDE启动
+
+### 使用Homebrew
+
+```bash
+# 使用Homebrew安装
+brew install ai-ide
+
+# 或使用npm安装CLI版本
+npm install -g ai-ide-cli
+```
+
+## Linux安装
+
+### Debian/Ubuntu系统
+
+```bash
+# 添加我们的仓库
+curl -fsSL https://ai-ide.example.com/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://ai-ide.example.com/apt stable main"
+
+# 更新软件包索引并安装
+sudo apt update
+sudo apt install ai-ide
+```
+
+### Red Hat/Fedora系统
+
+```bash
+# 添加仓库
+sudo dnf config-manager --add-repo https://ai-ide.example.com/rpm/ai-ide.repo
+
+# 安装
+sudo dnf install ai-ide
+```
+
+## 验证安装
+
+安装完成后，打开终端或命令提示符，运行:
+
+```bash
+ai-ide --version
+```
+
+如果安装成功，您应该看到版本信息输出。
+
+## 疑难解答
+
+### 常见问题
+
+1. **安装后无法启动**
+   - 检查是否满足系统最低要求
+   - 尝试以管理员/root权限重新安装
+
+2. **缺少依赖项**
+   - Windows: 安装最新的Visual C++ Redistributable
+   - Linux: 运行`sudo apt install -f`修复依赖
+
+3. **许可证问题**
+   - 确保您的许可证密钥正确输入
+   - 检查网络连接是否正常，许可证验证需要联网
+
+如需更多帮助，请[联系我们的支持团队](mailto:support@ai-ide.example.com)。 

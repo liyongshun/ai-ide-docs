@@ -1,0 +1,170 @@
+---
+title: "配置说明"
+description: "如何配置AI IDE以满足您的个性化需求"
+---
+
+# 配置说明
+
+AI IDE提供了丰富的配置选项，让您能够自定义IDE的行为、外观和AI功能，以满足您的特定需求。
+
+## 基本配置
+
+### 配置文件位置
+
+AI IDE使用JSON格式的配置文件：
+
+- Windows: `%APPDATA%\AI-IDE\settings.json`
+- macOS: `~/Library/Application Support/AI-IDE/settings.json`
+- Linux: `~/.config/ai-ide/settings.json`
+
+您也可以通过IDE中的设置界面（`Ctrl+,` 或 `Cmd+,`）访问和修改这些配置。
+
+### 基本设置示例
+
+```json
+{
+  "editor.fontSize": 14,
+  "editor.fontFamily": "Fira Code, Consolas, monospace",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "terminal.integrated.fontSize": 14,
+  "workbench.colorTheme": "AI Dark+",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000
+}
+```
+
+## AI 功能配置
+
+### 智能建议设置
+
+调整AI建议的行为和显示方式：
+
+```json
+{
+  "ai.suggestions.enabled": true,
+  "ai.suggestions.delay": 300,
+  "ai.suggestions.inlineCompletions": true,
+  "ai.suggestions.maxLength": 50,
+  "ai.suggestions.languages": ["javascript", "typescript", "python", "java"],
+  "ai.suggestions.confidenceThreshold": 0.7
+}
+```
+
+### 代码分析配置
+
+设置代码分析功能的灵敏度和范围：
+
+```json
+{
+  "ai.codeAnalysis.enabled": true,
+  "ai.codeAnalysis.realTime": true,
+  "ai.codeAnalysis.severityLevel": "warning",
+  "ai.codeAnalysis.includePerformance": true,
+  "ai.codeAnalysis.includeSecurityChecks": true,
+  "ai.codeAnalysis.maxFileSize": 1048576
+}
+```
+
+### 隐私设置
+
+控制AI IDE与云端服务交互的数据：
+
+```json
+{
+  "ai.privacy.shareUsageData": false,
+  "ai.privacy.shareCodeSnippets": false,
+  "ai.privacy.localProcessingOnly": false,
+  "ai.privacy.excludedFolders": ["node_modules", ".git", "secrets"],
+  "ai.privacy.excludedFiles": ["**/*.env", "**/*secret*", "**/*password*"]
+}
+```
+
+## 性能优化
+
+调整设置以优化IDE在您的系统上的性能：
+
+```json
+{
+  "ai.performance.memoryLimit": 4096,
+  "ai.performance.cpuUsageThreshold": 70,
+  "ai.performance.modelCacheSize": 512,
+  "editor.largeFileOptimizations": true,
+  "search.followSymlinks": false
+}
+```
+
+## 项目特定配置
+
+AI IDE支持项目级别的配置，覆盖全局设置。在项目根目录创建`.ai-ide`文件夹，并添加`settings.json`：
+
+```json
+{
+  "ai.suggestions.languageModel": "domain-specific",
+  "ai.codeAnalysis.customRules": ["./rules/*.json"],
+  "ai.context.projectDocumentation": ["./docs/**/*.md"],
+  "ai.context.includedAPIs": ["./api-docs/"]
+}
+```
+
+## 快捷键配置
+
+自定义AI功能的快捷键：
+
+```json
+{
+  "keybindings": [
+    {
+      "command": "ai.generateCode",
+      "key": "ctrl+shift+g",
+      "mac": "cmd+shift+g"
+    },
+    {
+      "command": "ai.explainCode",
+      "key": "ctrl+shift+e",
+      "mac": "cmd+shift+e"
+    },
+    {
+      "command": "ai.improveCode",
+      "key": "ctrl+shift+i",
+      "mac": "cmd+shift+i"
+    }
+  ]
+}
+```
+
+## 语言服务配置
+
+为不同编程语言配置特定的AI行为：
+
+```json
+{
+  "ai.languages.javascript": {
+    "framework": "react",
+    "moduleSystem": "es6",
+    "styleGuide": "airbnb"
+  },
+  "ai.languages.python": {
+    "framework": "django",
+    "styleGuide": "pep8",
+    "pythonVersion": "3.9"
+  }
+}
+```
+
+## 通过命令行配置
+
+AI IDE也支持通过命令行配置，适合自动化和CI/CD流程：
+
+```bash
+# 设置单个配置
+ai-ide config set ai.suggestions.enabled true
+
+# 使用JSON文件导入配置
+ai-ide config import path/to/settings.json
+
+# 重置为默认配置
+ai-ide config reset
+```
+
+通过这些配置选项，您可以完全控制AI IDE的工作方式，使其最适合您的编码风格和工作流程。 
